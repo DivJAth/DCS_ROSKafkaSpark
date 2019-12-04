@@ -1,0 +1,2 @@
+wanderbot
+-DCATKIN_DEVEL_PREFIX=/home/user/Desktop/ROS/dsc_wanderbot/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/user/Desktop/ROS/dsc_wanderbot/catkin_ws/install -G Unix Makefiles

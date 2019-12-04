@@ -1,0 +1,21 @@
+# to get the turtle bot world ready in gazebo did the following
+
+catkin_create_pkg wanderbot rospy geometry_msgs sensor_msgs nav_msgs
+ trajectory_msgs  actionlib_msgs diagnostic_msgs 
+
+1. sudo apt-get install ros-kinetic-turtlebot-gazebo (-p1 for the patches maybe)
+2. rosmake turtlebot_gazebo
+3. export TURTLEBOT_GAZEBO_WORLD_FILE=/opt/ros/kinetic/share/turtlebot_gazebo/worlds/playground.world
+4. roslaunch turtlebot_gazebo turtlebot_world.launch
+5. src/wanderbot/src/red_light_green_light.py cmd_vel:=cmd_vel_mux/input/teleop
+6. src/wanderbot/src/wander.py cmd_vel:=cmd_vel_mux/input/teleop
+
+
+
+edit gazebo to include multiple turtlebot
+roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=/home/user/Desktop/ROS/dsc_wanderbot/turtle4dcs.world
+
+
+/home/user/Desktop/ROS/dsc_wanderbot/turtle4dcs.world
+
+
