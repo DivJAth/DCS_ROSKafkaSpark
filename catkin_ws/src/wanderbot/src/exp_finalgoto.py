@@ -8,11 +8,10 @@ from getLocation import Location
 
 test = Location()
 curr_pos = {}
-final={"x":5, "y":-2}
+final={"x":-2.923, "y":2.0433}
 
 # curr_y = 0.0
 # curr_theta = 0.0
-
 
 def scan_callback(msg):
     global g_range_ahead
@@ -28,7 +27,7 @@ def euclidean_distance(curr_pos,final_pose):
     return sqrt(pow((curr_pos["x"] - final_pose["x"]), 2) +
                        pow((curr_pos["y"] - final_pose["y"]), 2))
 
-def linear_vel(curr_pos, final_pose, constant = 0.1):
+def linear_vel(curr_pos, final_pose, constant = 1):
     return constant * euclidean_distance(curr_pos,final_pose)
 
 def steering_angle(curr_pos,final_pose):
@@ -52,25 +51,27 @@ distance_tolerance = 2
 odomval()
 xxx=0
 k=0.2
-while euclidean_distance(curr_pos, final) > distance_tolerance:
+while (euclidean_distance(curr_pos, final) > distance_tolerance) or xxx>20:
     xxx+=1
     odomval()
-
-    if driving_forward:
-        if (g_range_ahead < 0.5):
-            driving_forward = False
-            # state_change_time = rospy.Time.now() + rospy.Duration(5)
-    else: # we're not driving_forward
-        # if rospy.Time.now() > state_change_time:
-        driving_forward = True # we're done spinning, time to go forward!
-        # state_change_time = rospy.Time.now() + rospy.Duration(30)
+    # if driving_forward:
+    #     if (g_range_ahead < 0.1):
+    #         driving_forward = False
+    #         # state_change_time = rospy.Time.now() + rospy.Duration(5)
+    # else: # we're not driving_forward
+    #     # if rospy.Time.now() > state_change_time:
+    #     driving_forward = True # we're done spinning, time to go forward!
+    #     # state_change_time = rospy.Time.now() + rospy.Duration(30)
+    
     twist = Twist()
     if driving_forward:
         print(curr_pos,final,linear_vel(curr_pos, final),euclidean_distance(curr_pos, final),angular_vel(curr_pos, final))
         twist.linear.x = linear_vel(curr_pos, final,0.5)
-        twist.angular.z = angular_vel(curr_pos, final,0.1)
+        twist.angular.z = 0
+        # twist.angular.z = angular_vel(curr_pos, final,0.1)
 
     else:
+        twist.linear.x = 0
         twist.angular.z = angular_vel(curr_pos, final,1)
 
     cmd_vel_pub.publish(twist)

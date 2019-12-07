@@ -20,9 +20,9 @@ if __name__ == "__main__":
     ssc=StreamingContext(sc,10)
     #conf=SparkConf.set("spark.streaming.concurrentJobs", "2").setAppName("PythonkafkaWordCount")
     sc.setLogLevel("OFF")
-    brokers,topic1=sys.argv[1:]
+    brokers,topic=sys.argv[1:]
     #kvs=KafkaUtils.createStream(ssc,brokers,"Spark-streaming-consumer",{topic:1})
-    kvs1=KafkaUtils.createStream(ssc,brokers,"Spark-streaming-consumer",{topic1:1})
+    kvs1=KafkaUtils.createStream(ssc,brokers,"Spark-streaming-consumer",{topic:1})
     #print("KVS:",kvs)
     #print("kvs type:",type(kvs))
     #lines=kvs.map(print_stream)
