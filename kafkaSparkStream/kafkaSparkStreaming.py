@@ -7,9 +7,15 @@ from pyspark.streaming import StreamingContext
 from pyspark import SparkConf
 from pyspark.streaming.kafka import KafkaUtils
 from math import pow, atan2, sqrt, radians, sin, cos
+from pyMongo import MongoClient
 
 from producer import *
+import time
+import datetime
 
+
+client=MongoClient('localhost', 27017)
+coll=client.testTopic.test1
 
 def print_stream(x):
     print("Inside stream:",loads(x[1]).encode('utf-8'))
@@ -46,16 +52,24 @@ kafka_producer = connect_kafka_producer()
 def handler(message):
     records = message.collect()
     for record in records:
+        ts=time.time()
+        st=datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         kafka_producer.send('spark.out', str(record))
+        my_dict={st:record}
+        col1.insert_one(my_dict)
         kafka_producer.flush()
+
+
 
 if __name__ == "__main__":
     #conf=SparkConf.setAppName("PythonkafkaWordCount")#.set("spark.streaming.concurrentJobs", "2")
+    #client=MongoClient('localhost', 27017)
     sc=SparkContext(appName="PythonkafkaWordCount")
     ssc=StreamingContext(sc,10)
     #conf=SparkConf.set("spark.streaming.concurrentJobs", "2").setAppName("PythonkafkaWordCount")
     sc.setLogLevel("OFF")
     brokers,topic1=sys.argv[1:]
+    #coll=client.testTopic.test1
     #kvs=KafkaUtils.createStream(ssc,brokers,"Spark-streaming-consumer",{topic:1})
     kvs=KafkaUtils.createStream(ssc,brokers,"Spark-streaming-consumer",{topic1:1})
     #print("KVS:",kvs)
