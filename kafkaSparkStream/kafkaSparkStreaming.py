@@ -7,15 +7,15 @@ from pyspark.streaming import StreamingContext
 from pyspark import SparkConf
 from pyspark.streaming.kafka import KafkaUtils
 from math import pow, atan2, sqrt, radians, sin, cos
-# from pyMongo import MongoClient
+from pymongo import MongoClient
 
 from producer import *
 import time
 import datetime
 
 
-# client=MongoClient('localhost', 27017)
-# coll=client.testTopic.test1
+client=MongoClient('localhost', 27017)
+coll=client.testTopic.test1
 
 def print_stream(x):
     print("Inside stream:",loads(x[1]).encode('utf-8'))
@@ -55,8 +55,8 @@ def handler(message):
         ts=time.time()
         st=datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         kafka_producer.send('spark.out', str(record))
-        # my_dict={st:record}
-        # col1.insert_one(my_dict)
+        my_dict={st:record}
+        coll.insert_one(my_dict)
         kafka_producer.flush()
 
 
