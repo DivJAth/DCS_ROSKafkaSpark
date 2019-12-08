@@ -31,37 +31,39 @@ obstacle=False
 # odomval()
 
 
-rospy.init_node ('wander1', anonymous=True)
+rospy.init_node ('wander', anonymous=True)
 pub = rospy.Publisher('/cmd_vel_mux/input/teleop', Twist, queue_size=1)
 speed = Twist()
 r = rospy.Rate(4)
 
 while True:
-        for msg2 in consumer2:
-            print("Before message: distance_message", msg2.value)
-        for msg in consumer1:
-            print("Before message:", msg.value)
-            # for msg2 in consumer2:
-            #     print("Before message:", msg2.value)
+    for msg2 in consumer2:
+        print("Before message: distance_message", eval(msg2.value))
+        movement = eval(msg2.value)
+        # for msg in consumer1:
+        #     print("Before message:", msg.value)
+        #     # for msg2 in consumer2:
+        #     #     print("Before message:", msg2.value)
+        # print(xxx, curr_pos, dist, turn)
+        dist, angle_to_goal, turn, original_theta = movement[0], movement[1], movement[2], movement[3]
+        print(abs(angle_to_goal - original_theta))
+        if abs(angle_to_goal - original_theta) < 0.1:    #0.1 because it too exact for a robot if both angles should be exactly 0
+            print("here")
+            move_forward = True
+        speed.angular.z = 0.2 * turn
+        if move_forward == True:
+            #keep speed between 0.3 and 0.7
+            print("move_forward")
+            if 0.1 * dist > 0.3 and 0.1 * dist < 0.7:
+                speed.linear.x = 0.05 * dist
+            elif 0.1 * dist > 0.7:
+                speed.linear.x = 0.7
+            else:
+                speed.linear.x = 0.3
+            print("move_forward", speed.linear.x)
+        pub.publish(speed)
 
-            # print(xxx, curr_pos, dist, turn)
-            # if abs(angle_to_goal - curr_pos["theta"]) < 0.1:    #0.1 because it too exact for a robot if both angles should be exactly 0
-            #     move_forward = True
-            # speed.angular.z = 0.2 * turn
-            # if move_forward == True:
-            #     #keep speed between 0.3 and 0.7
-            #     if 0.1 * dist > 0.3 and 0.1 * dist < 0.7:
-            #         speed.linear.x = 0.05 * dist
-            #     elif 0.1 * dist > 0.7:
-            #         speed.linear.x = 0.7
-            #     else:
-            #         speed.linear.x = 0.3
-
-            # pub.publish(speed)
-    
-    
-# odomval()
-
+# odomvl()
 
 
 

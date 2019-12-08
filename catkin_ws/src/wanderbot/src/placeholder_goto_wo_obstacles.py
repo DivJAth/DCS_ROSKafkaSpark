@@ -82,6 +82,7 @@ while (euclidean_distance(curr_pos, final_pose) > distance_tolerance):
 
     if move_forward == True:
         #keep speed between 0.3 and 0.7
+        print("moving forward")
         if 0.1 * dist > 0.3 and 0.1 * dist < 0.7:
             speed.linear.x = 0.05 * dist
         elif 0.1 * dist > 0.7:

@@ -33,7 +33,7 @@ def consumer_decode(msg):
     dist = euclidean_distance(data["curr_pose"], data["final_pose"])  
     angle_to_goal, turn  = turn_angle(data["curr_pose"], data["final_pose"])
     # print("check_decode",eval(msg[1]), type(data['curr_pose']), data['final_pose'], type(data))
-    return (dist, angle_to_goal, turn)
+    return (dist, angle_to_goal, turn, data["curr_pose"]["theta"])
     
        # for key,value in msg.items():
             # print(value[0]./value)
