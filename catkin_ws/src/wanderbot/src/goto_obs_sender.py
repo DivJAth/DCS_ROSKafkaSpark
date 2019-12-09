@@ -35,9 +35,10 @@ kafka_producer = connect_kafka_producer()
 odomval()
 g_range_ahead = 1
 
-rospy.init_node ('wander', anonymous=True)
-scan_sub = rospy.Subscriber('scan', LaserScan, scan_callback)
-
+rospy.init_node ('wander', anonymous=True, log_level=rospy.DEBUG)
+scan_topic = 'scan'
+scan_sub = rospy.Subscriber(scan_topic, LaserScan, scan_callback)
+rospy.loginfo("Subcribe to the topic %s", scan_topic)
 # pub = rospy.Publisher('/cmd_vel_mux/input/teleop', Twist, queue_size=1)
 # speed = Twist()
 r = rospy.Rate(4)
@@ -46,12 +47,19 @@ while euclidean_distance(curr_pos,final_pose) > distance_tolerance:
     # print(scan_sub)
     # print("send_message")
     print({"curr_pose":curr_pos,"final_pose":final_pose})
-    publish_message(kafka_producer, 'dist_stuff', 'movement', {"curr_pose":curr_pos,"final_pose":final_pose})
+    kafka_topic = 'dist_stuff'
+    publish_message(kafka_producer, kafka_topic, 'movement', {"curr_pose":curr_pos,"final_pose":final_pose})
+    rospy.loginfo_throttle(120, "publish message to kafka on topic:"+ str(kafka_topic))
     # kafka_producer.send('t1', value={"curr_pose":curr_pos,"final_pose":final_pose})
     # print("lase_sender",g_range_ahead)
-    publish_message(kafka_producer, 'laser', 'laserscan', {"distance_obstacle": g_range_ahead})
+    laser_topic = 'laser'
+    publish_message(kafka_producer, laser_topic, 'laserscan', {"distance_obstacle": g_range_ahead})
+    rospy.loginfo_throttle(120,"publish message to kafka on topic "+ str(laser_topic))
+    
     kafka_producer.flush()
     odomval()
+
+
 
 
 

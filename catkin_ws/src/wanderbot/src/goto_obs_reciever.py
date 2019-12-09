@@ -32,8 +32,11 @@ obstacle=False
 # odomval()
 
 
-rospy.init_node ('wander', anonymous=True)
-pub = rospy.Publisher('/cmd_vel_mux/input/teleop', Twist, queue_size=1)
+rospy.init_node ('wander1', anonymous=True, log_level=rospy.DEBUG)
+movement_topic = '/cmd_vel_mux/input/teleop'
+pub = rospy.Publisher(movement_topic, Twist, queue_size=1)
+rospy.loginfo("Publish to the topic %s", movement_topic)
+
 speed = Twist()
 r = rospy.Rate(4)
 
@@ -52,6 +55,7 @@ while True:
     msg_movement = consumer2._poll_once(timeout_ms=100, max_records=10)
     if (msg_movement):
         for key2, msg2 in msg_movement.items():
+            rospy.loginfo_throttle(120, "Every 120 seconds, Laser Scan distance through kafka " + str(eval(msg2[0].value)))
             print("Before message: distance_message", eval(msg2[0].value))
             movement = eval(msg2[0].value)
             dist, angle_to_goal, turn, original_theta = movement[0], movement[1], movement[2], movement[3]
@@ -71,4 +75,6 @@ while True:
                     speed.linear.x = 0.3
                 print("move_forward", speed.linear.x)
             pub.publish(speed)
+            rospy.loginfo_throttle(120, "Every 120 seconds, speed published to /cmd_vel_mux/input/teleop. The speed is: "+str(speed))
+
 

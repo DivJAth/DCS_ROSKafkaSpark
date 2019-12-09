@@ -15,7 +15,7 @@ import datetime
 
 
 client=MongoClient('localhost', 27017)
-coll=client.testTopic.test1
+coll=client.testTopic.te
 
 def print_stream(x):
     print("Inside stream:",loads(x[1]).encode('utf-8'))
@@ -55,8 +55,13 @@ def handler(message):
         ts=time.time()
         st=datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         kafka_producer.send('spark.out', str(record))
-        my_dict={st:record}
-        coll.insert_one(my_dict)
+        mydict={st:record}
+        #print("My Dict:",mydict)
+        z=coll.insert_one(mydict)
+        print(z.inserted_id)
+        y=coll.find(mydict)
+        for x in y:
+            print(x)
         kafka_producer.flush()
 
 

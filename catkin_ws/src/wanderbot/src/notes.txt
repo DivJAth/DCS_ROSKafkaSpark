@@ -19,3 +19,7 @@ roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=/home/user/Desktop
 /home/user/Desktop/ROS/dsc_wanderbot/turtle4dcs.world
 
 
+
+https://dzone.com/articles/python-custom-logging-handler-example
+
+

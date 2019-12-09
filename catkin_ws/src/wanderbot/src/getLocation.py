@@ -25,6 +25,9 @@ class Location:
         try:
             plist = []
             model_coordinates = rospy.ServiceProxy('/gazebo/get_model_state',GetModelState)
+            topic_getmodel = '/gazebo/get_model_state'
+            rospy.loginfo("Get Model State service call success %s", topic_getmodel)
+            
             for block in self._blockListDict.itervalues():
                 blockName = str(block._name)
                 resp_coordinates = model_coordinates(blockName,"")
