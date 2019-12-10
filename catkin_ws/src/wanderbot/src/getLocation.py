@@ -33,8 +33,6 @@ class Location:
                 resp_coordinates = model_coordinates(blockName,"")
                 rot_q = resp_coordinates.pose.orientation
                 (roll,pitch,theta) = euler_from_quaternion ([rot_q.x,rot_q.y,rot_q.z,rot_q.w])
-                # print([Point(resp_coordinates.pose.position.x,
-                    # resp_coordinates.pose.position.y,resp_coordinates.pose.position.z),{"theta":theta}])
                 plist.append({blockName:{"x":resp_coordinates.pose.position.x,"y":resp_coordinates.pose.position.y,
                     "z":resp_coordinates.pose.position.z, "theta":theta}})
             return plist
@@ -42,9 +40,3 @@ class Location:
             rospy.loginfo("Get Model State service call failed:  {0}".format(e))
 
 
-
-# if __name__ == '__main__':
-#     x=Location()
-#     print("s1",x.update_gazebo_modelPoints())
-#     # sleep(3)
-#     # print("s2",x.update_gazebo_modelPoints())

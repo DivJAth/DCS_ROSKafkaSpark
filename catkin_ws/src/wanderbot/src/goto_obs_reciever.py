@@ -6,7 +6,6 @@ from nav_msgs.msg import Odometry
 from math import pow, atan2, sqrt, radians, sin, cos, isnan
 from getLocation import Location
 from numpy import nan
-# from gazebo_msgs.msg import ModelStates
 
 from producer import *
 import json
@@ -17,24 +16,18 @@ consumer1 = KafkaConsumer('laser', auto_offset_reset='latest',
 consumer2 = KafkaConsumer('spark.out', auto_offset_reset='latest', 
         bootstrap_servers=['localhost:9092'], api_version=(0, 10), consumer_timeout_ms=10000000)
 
-# consumer1 = KafkaConsumer('laser', auto_offset_reset='latest',
-#                              bootstrap_servers=['localhost:9092'], api_version=(0, 10), consumer_timeout_ms=10000000,
-#                              value_deserializer=lambda x: loads(x.decode('utf-8')))
 
-# gazebo_loc = Location()
-# curr_pos = {}
-# all_obstacle_location = []
-final_pose={"x":-2.923, "y":2.0433}
+# final_pose={"x":-2.923, "y":2.0433}
 move_forward = False
 distance_tolerance = 0.5
-obstacle=False
+# obstacle=False
 # kafka_producer = connect_kafka_producer()
 # odomval()
 
 
 rospy.init_node ('wander1', anonymous=True, log_level=rospy.DEBUG)
 movement_topic = '/cmd_vel_mux/input/teleop'
-pub = rospy.Publisher(movement_topic, Twist, queue_size=1)
+pub = rospy.Publisher('/cmd_vel_mux/input/teleop', Twist, queue_size=1)
 rospy.loginfo("Publish to the topic %s", movement_topic)
 
 speed = Twist()

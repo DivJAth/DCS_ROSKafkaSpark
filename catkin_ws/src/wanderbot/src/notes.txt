@@ -2,7 +2,7 @@
 
 catkin_create_pkg wanderbot rospy geometry_msgs sensor_msgs nav_msgs
  trajectory_msgs  actionlib_msgs diagnostic_msgs 
-
+sudo apt update && sudo apt upgrade
 1. sudo apt-get install ros-kinetic-turtlebot-gazebo (-p1 for the patches maybe)
 2. rosmake turtlebot_gazebo
 3. export TURTLEBOT_GAZEBO_WORLD_FILE=/opt/ros/kinetic/share/turtlebot_gazebo/worlds/playground.world
@@ -21,5 +21,10 @@ roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=/home/user/Desktop
 
 
 https://dzone.com/articles/python-custom-logging-handler-example
+
+
+
+
+gcloud beta dataproc jobs submit pyspark --cluster spark-cluster --properties spark.jars.packages=org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.2 ~/Desktop/ROS/dsc_wanderbot/kafkaSparkStream/kafkaSparkStreaming.py 192.168.233.141:2181 dist_stuff
 
 
